@@ -1,0 +1,11 @@
+.btn {
+  cursor: pointer;
+}
+
+header .btn-warning, header .btn-warning:hover, #form-new-topic .btn-warning {
+  color: white
+}
+
+#form-new-topic {
+  animation: all 100ms ease;
+}
