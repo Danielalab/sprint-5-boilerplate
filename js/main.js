@@ -16,20 +16,28 @@ $(document).ready(() => {
     event.preventDefault();
     formNewTopic.addClass('d-none');
     formNewTopic.removeClass('d-block');
-
-    $.ajax({
-      type: 'POST',
-      url: 'http://examen-laboratoria-sprint-5.herokuapp.com/topics',
-      data: '{"author_name": "ajax","content": "hello"}', // or JSON.stringify ({name: 'jonas'}),
-      success: function(data) {
-        alert('si funciona'); 
-      },
-      contentType: 'application/json',
-      dataType: 'json'
-    }); 
+    $('#nombre, #message').keyup(function valuesInputs() {
+      let authors = $('#nombre').val();
+      let messages = $('#message').val();
+      console.log(authors);
+      console.log(messages);
+    
+      // Publicando
+      $.ajax({
+        type: 'POST',
+        url: 'http://examen-laboratoria-sprint-5.herokuapp.com/topics',
+        data: JSON.stringify({'author_name': authors, 
+          'content': messages}),
+        // or JSON.stringify ({name: 'jonas'}),
+        success: function(data) {
+          alert('si funciona'); 
+        },
+        contentType: 'application/json',
+        dataType: 'json'
+      });
+    });
   };
   
-
   // asociando funciones a elementos del DOM
   btnNewTopic.on('click', showFormNewTopic);
   btnCreateTopic.on('click', createNewTopic);
@@ -45,7 +53,8 @@ $(document).ready(() => {
       let aTopic = data[i].content;
       let anAuthor = data[i].author_name;
       let numberAnswers = data[i].responses_count;
-      $addTopic.find('.box').append(`<div class="col-8 p-3 my-3 border rounded">
+      let ids = data[i].id;
+      $addTopic.find('.box').append(`<div class="col-8 p-3 my-3 border rounded" data-id="${ids}">
         <div class="row justify-content-center"><div class="col-4"><p class="text-center my-0">Tema:
         <span id="topic">${aTopic}</span></p></div><div class="col-4"><p class="text-center my-0">Por:
         <span id="author">${anAuthor}</span></p></div><div class="col-4"><p class="text-center my-0">Respuestas:
