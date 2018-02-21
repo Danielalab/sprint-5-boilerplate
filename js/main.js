@@ -15,12 +15,39 @@ $(document).ready(() => {
   let search = $('#search');
   let btnSearch = $('#btn-search');
 
-  let searchTopic = () => {}; 
+  let searchTopic = () => {
+    let inputSearchValue = search.val().trim();
+    let parentsDivs = $('.parent');
+    if (inputSearchValue.length !== 0) {
+      [parentsDivs].forEach(element => {
+        element.addClass('d-none');
+        element.removeClass('d-block');
+      });
+
+      let allTopics = $('.topic-class');
+      [...allTopics].forEach(element => {
+        let textTopic = element.textContent.trim(); 
+        let parentDiv = element.parentElement.parentElement.parentElement.parentElement;
+        if (textTopic.indexOf(inputSearchValue) !== -1) {
+          parentDiv.classList.add('d-block');
+          parentDiv.classList.remove('d-none');          
+        } else {
+          parentDiv.classList.add('d-none');
+          parentDiv.classList.remove('d-block');
+        };
+      }); 
+    } else {
+      console.log('input vacio');
+      [parentsDivs].forEach(element => {
+        element.addClass('d-block');
+        element.removeClass('d-none');
+      });
+    }
+  }; 
   search.on('input', searchTopic);
 
   // funcionalidad para crear topic y ocultar formulario
   let createNewTopic = (event) => {
-    debugger;
     event.preventDefault();
     formNewTopic.addClass('d-none');
     formNewTopic.removeClass('d-block');
@@ -53,13 +80,12 @@ $(document).ready(() => {
     $addTopic.append('<div class="row justify-content-center box"/>');
 
     function addResponse(data) {
-      console.log(data);
       $.each(data, function(i, obj) {
         let aTopic = data[i].content;
         let anAuthor = data[i].author_name;
         let numberAnswers = data[i].responses_count;
         let ids = data[i].id;
-        $addTopic.find('.box').append(`<div class="col-8 p-3 my-3 border rounded" data-id="${ids}">
+        $addTopic.find('.box').append(`<div class="col-8 p-3 my-3 border rounded d-block parent" data-id="${ids}">
           <div class="row justify-content-center"><div class="col-4"><p class="text-center my-0">Tema:
           <span id="topic" class="topic-class">${aTopic}</span></p></div><div class="col-4"><p class="text-center my-0">Por:
           <span id="author">${anAuthor}</span></p></div><div class="col-4"><p class="text-center my-0">Respuestas:
