@@ -45,6 +45,7 @@ $(document).ready(() => {
     }
   }; 
   search.on('input', searchTopic);
+  btnSearch.on('click', searchTopic);
 
   // funcionalidad para crear topic y ocultar formulario
   let createNewTopic = (event) => {
